@@ -1,9 +1,13 @@
 package com.Mapping_SpringBoot_JPA.Mapping_SpringBoot_JPA.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Data
+import java.util.Objects;
+import java.util.Set;
+
+
 @Builder
 @Getter
 @Setter
@@ -22,4 +26,20 @@ public class DepartmentEntity {
     @OneToOne
     @JoinColumn(name = "department_manager")
     private EmployeeEntity manager;
+
+    @OneToMany(mappedBy = "workerDepartment",fetch = FetchType.EAGER)
+
+    private Set<EmployeeEntity> workers;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof DepartmentEntity that)) return false;
+        return Objects.equals(getId(), that.getId()) && Objects.equals(getTitle(), that.getTitle());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getTitle());
+    }
 }
