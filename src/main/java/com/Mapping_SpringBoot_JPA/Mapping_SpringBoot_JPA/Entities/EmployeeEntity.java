@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Builder
@@ -29,6 +30,14 @@ public class EmployeeEntity {
     @JoinColumn(name="worker_department_id",referencedColumnName = "id")
     @JsonIgnore
     private DepartmentEntity workerDepartment;
+
+    @ManyToMany
+    @JoinTable(name = "freelancer_department_mapping",
+    joinColumns = @JoinColumn(name = "employee_id"),
+    inverseJoinColumns = @JoinColumn(name = "department_id")
+    )
+    @JsonIgnore
+    private Set<DepartmentEntity> freelanceDepartments;
 
     @Override
     public boolean equals(Object o) {
